@@ -25,20 +25,25 @@ export class UsersComponent implements OnInit {
   ngOnInit() {
     this.userService.getUsersList().subscribe((usersArray: User[]) => {
       this.users = usersArray;
-      console.log( this.users )
-
-      this.dataSource = new MatTableDataSource(this.users);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      this.initTable();
     });
   }
 
+  /**
+   * filter by string value
+   * @param filterValue {string}
+   */
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  initTable() {
+    this.dataSource = new MatTableDataSource(this.users);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
 }

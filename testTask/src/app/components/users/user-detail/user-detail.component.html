@@ -1,0 +1,79 @@
+<mat-card *ngIf="!isEditMode" class="example-card">
+  <mat-card-header>
+    <div mat-card-avatar [matBadge]="user.isActive ? 'on' : 'off'"  matBadgePosition="before" [matBadgeColor]="user.isActive  ? accent : warn " [ngStyle]="{'background-image': getUserPictureUrl()}" class="header-image"></div>
+
+    <mat-card-title>{{user.name}}</mat-card-title>
+    <mat-card-subtitle >Email: {{user.email}}</mat-card-subtitle>
+    <mat-card-subtitle>Phone: {{user.phone}}</mat-card-subtitle>
+    <mat-card-subtitle>Balance: {{user.balance}}</mat-card-subtitle>
+    <mat-card-subtitle>Age: {{user.age}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{user.about}}</p>
+    <mat-chip-list aria-label="Fish selection">
+      <mat-chip *ngFor="let tag of user.tags">{{tag}}</mat-chip>
+    </mat-chip-list>
+    <p>Address: {{user.address}}</p>
+    <p>Registered: {{user.registered.split(' ').join('') | date:"MM-dd-yyyy HH-mm"}}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button (click)="isEditMode = !isEditMode" color="accent">Edit</button>
+    <button mat-raised-button color="warn">Remove</button>
+  </mat-card-actions>
+</mat-card>
+
+<mat-card style="display: flex; flex-direction: column;" *ngIf="isEditMode" class="example-card">
+  <mat-card-header>
+      <mat-card-title>Edit user info: {{user.name}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+      <mat-form-field class="example-full-width">
+          <input matInput placeholder="Name" [value]="user.name">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+          <input matInput type="email" placeholder="Email" [value]="user.email">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+          <input matInput placeholder="Phone" [value]="user.phone">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+          <input matInput placeholder="Balance" [value]="user.balance">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+          <input matInput placeholder="Age" [value]="user.age">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <textarea matInput rows="5" [value]="user.about" placeholder="About"></textarea>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+          <mat-chip-list #chipList aria-label="allTags selection">
+            <mat-chip
+              *ngFor="let tag of allTags"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="remove(tag)">
+              {{tag}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input
+              placeholder="Add new tags"
+              #tagsInput
+              [formControl]="tagCtrl"
+              [matAutocomplete]="auto"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlur"
+              (matChipInputTokenEnd)="add($event)">
+          </mat-chip-list>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+            <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+              {{tag}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Address" [value]="user.address">
+        </mat-form-field>
+  </mat-card-content>
+</mat-card>
+
