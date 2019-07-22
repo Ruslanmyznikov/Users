@@ -2,9 +2,14 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
 
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
+import { Store } from '@ngrx/store';
+import { editUser, setUsers } from 'src/app/store/actions/user.actions';
+import { State } from 'src/app/store/reducers';
+import { UserDetailComponent } from './user-detail/user-detail.component';
 
 
 @Component({
@@ -16,7 +21,7 @@ export class UsersComponent implements OnInit {
   dataSource: MatTableDataSource<User>;
   displayedColumns: string[] = ['_id', 'name', 'company', 'eyeColor'];
   users: User[];
-  constructor(private userService: UserService) { 
+  constructor(private userService: UserService, private store: Store<State>, public dialog: MatDialog) { 
   }
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -26,6 +31,17 @@ export class UsersComponent implements OnInit {
     this.userService.getUsersList().subscribe((usersArray: User[]) => {
       this.users = usersArray;
       this.initTable();
+      this.store.dispatch(setUsers({users: [...usersArray]}));
+      this.store.select(state => state.users).subscribe(val => {
+        console.log(val)
+      });
+    });
+  }
+
+  openDialog(user: User): void {
+    const dialogRef = this.dialog.open(UserDetailComponent, {
+      width: '980px',
+      data: user
     });
   }
 
