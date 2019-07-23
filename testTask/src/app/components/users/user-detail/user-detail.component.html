@@ -1,4 +1,4 @@
-<mat-card *ngIf="!isEditMode" class="example-card">
+<mat-card *ngIf="!isEditMode && !isCreateMode" class="example-card">
   <mat-card-header>
     <div mat-card-avatar [matBadge]="user.isActive ? 'on' : 'off'" matBadgePosition="before"
       [matBadgeColor]="user.isActive  ? accent : warn " [ngStyle]="{'background-image': getUserPictureUrl()}"
@@ -20,14 +20,17 @@
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button (click)="isEditMode = !isEditMode" color="accent">Edit</button>
-    <button mat-raised-button color="warn">Remove</button>
+    <button mat-raised-button (click)="killUser(user)" color="warn">Remove</button>
   </mat-card-actions>
 </mat-card>
 
-<mat-card style="display: flex; flex-direction: column;" *ngIf="isEditMode" class="example-card">
+<mat-card style="display: flex; flex-direction: column;" *ngIf="isEditMode || isCreateMode " class="example-card">
   <form [formGroup]="userDetailEdit" (ngSubmit)="onSubmit()">
-  <mat-card-header>
+  <mat-card-header *ngIf="isEditMode">
     <mat-card-title>Edit user info: {{user.name}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-header *ngIf="isCreateMode">
+    <mat-card-title>Create new User</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <mat-form-field class="width-50">
@@ -50,15 +53,15 @@
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <mat-chip-list #chipList aria-label="allTags selection">
-        <mat-chip *ngFor="let tag of allTags" [selectable]="selectable" [removable]="removable" (removed)="remove(tag)">
+        <mat-chip *ngFor="let tag of allTags" [selectable]="selectable" [removable]="removable" (removed)="removeTag(tag)">
           {{tag}}
           <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
         </mat-chip>
         <input placeholder="Add new tags" #tagsInput [formControl]="tagCtrl" formControlName="tagsCtrl" [matAutocomplete]="auto"
           [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+          [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addOptions($event)">
       </mat-chip-list>
-      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedTag($event)">
         <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
           {{tag}}
         </mat-option>
@@ -66,6 +69,15 @@
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <textarea matInput rows="3" [value]="user.about"  formControlName="about" placeholder="About"></textarea>
+    </mat-form-field>
+    <mat-form-field class="width-50">
+      <input matInput placeholder="Company" [value]="user.company" formControlName="company">
+    </mat-form-field>
+    <mat-form-field class="width-50">
+      <input matInput placeholder="Eye Color" [value]="user.eyeColor " formControlName="eyeColor">
+    </mat-form-field>
+    <mat-form-field class="width-50">
+      <input matInput placeholder="Registered" [value]="user.registered " formControlName="registered">
     </mat-form-field>
   </mat-card-content>
   <mat-card-actions>

@@ -5,11 +5,12 @@ import { User } from 'src/app/models/user.model';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatTableDataSource, MatTable } from '@angular/material';
 import { Store } from '@ngrx/store';
-import { editUser, setUsers } from 'src/app/store/actions/user.actions';
+import { setUsers } from 'src/app/store/actions/user.actions';
 import { State } from 'src/app/store/reducers';
 import { UserDetailComponent } from './user-detail/user-detail.component';
+import { PersistantService } from 'src/app/services/persistant.service';
 
 
 @Component({
@@ -21,27 +22,41 @@ export class UsersComponent implements OnInit {
   dataSource: MatTableDataSource<User>;
   displayedColumns: string[] = ['_id', 'name', 'company', 'eyeColor'];
   users: User[];
-  constructor(private userService: UserService, private store: Store<State>, public dialog: MatDialog) { 
+  constructor(
+    private userService: UserService, 
+    private store: Store<State>, 
+    public dialog: MatDialog,
+    private persistanceService: PersistantService
+    ) { 
   }
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort
-  
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('table', {static: true}) table: MatTable<Element>;
+
   ngOnInit() {
-    this.userService.getUsersList().subscribe((usersArray: User[]) => {
-      this.users = usersArray;
-      this.initTable();
-      this.store.dispatch(setUsers({users: [...usersArray]}));
-      this.store.select(state => state.users).subscribe(val => {
-        console.log(val)
+    if (this.persistanceService.get('usersData')) {
+      this.bootstarapTable(this.persistanceService.get('usersData').users)
+    } else {
+      this.userService.getUsersList().subscribe((usersArray: User[]) => {
+        this.persistanceService.set('usersData', usersArray)
+        this.bootstarapTable(usersArray)
       });
-    });
+    }
   }
 
-  openDialog(user: User): void {
+  bootstarapTable(usersArray) {
+    console.log(usersArray)
+    this.users = usersArray;
+    this.initTable();
+    this.store.dispatch(setUsers({users: [...usersArray]}));
+  }
+
+  openDialog(user: User, isCreateUser: boolean = false): void {
+    !user && (user = new User());
     const dialogRef = this.dialog.open(UserDetailComponent, {
       width: '980px',
-      data: user
+      data: {user: user, isCreateMode: isCreateUser, table: this.table, tableSort: this.sort, tablePaginator: this.paginator}
     });
   }
 

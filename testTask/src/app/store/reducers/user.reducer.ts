@@ -12,12 +12,30 @@ export const initialState: State  = {
 
 export const userReducer = createReducer(initialState,
   on(UserPageActions.editUser, (state, user) => {
-    let arr = state.users
-    arr.push(user)
-    return {users: arr}
+    let newState = JSON.parse(JSON.stringify(state));
+    newState.users.forEach((element, index) => {
+      if (element._id === user._id) {
+        newState.users[index] = user;
+      }
+    })
+    return newState
   }),
   on(UserPageActions.setUsers, (state, data) => {
     return {users: [...data.users]}
+  }),
+  on(UserPageActions.createUser, (state, user) => {
+    let newState = JSON.parse(JSON.stringify(state));
+    newState.users.push(user)
+    return newState
+  }),
+  on(UserPageActions.killUser, (state, user) => {
+    let newState = JSON.parse(JSON.stringify(state));
+    newState.users.forEach((element, index) => {
+      if (element._id === user._id) {
+        newState.users.splice(index, 1);
+      }
+    })
+    return newState
   }) 
 );
 

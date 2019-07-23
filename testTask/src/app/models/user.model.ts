@@ -1,3 +1,5 @@
+import * as uid from 'uuid/v1';
+
 export class User {
   about: string;
   address: string;
@@ -32,11 +34,12 @@ export class User {
     longitude = null,
     name = '',
     phone = '',
-    picture = '',
+    picture = 'http://placehold.it/32x32',
     registered = '',
     tags = [],
-    _id = ''
+    _id = uid(`secretWord ${Math.random()*255}`),
   ) {
+    this._id = _id;
     this.about = about;
     this.address = address;
     this.age = age;
@@ -53,6 +56,6 @@ export class User {
     this.phone = phone;
     this.picture = picture;
     this.registered = registered;
-    this.tags = [];
+    this.tags = tags;
   }
 }

@@ -3,7 +3,7 @@
 </mat-form-field>
 
 <div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" matSort>
+  <table mat-table #table [dataSource]="dataSource" matSort>
 
     <!-- ID Column -->
     <ng-container matColumnDef="_id">
@@ -14,7 +14,7 @@
     <!-- Progress Column -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> name </th>
-      <td mat-cell *matCellDef="let user"> {{user.name}}% </td>
+      <td mat-cell *matCellDef="let user"> {{user.name}}</td>
     </ng-container>
 
     <!-- Name Column -->
@@ -36,3 +36,5 @@
 <!-- [routerLink]="['/users', user._id]" -->
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 </div>
+
+<button style="margin: 20px" (click)="openDialog(null, true)" mat-raised-button color="accent">Add new user</button>
