@@ -16,7 +16,7 @@
       <mat-chip *ngFor="let tag of user.tags">{{tag}}</mat-chip>
     </mat-chip-list>
     <p>Address: {{user.address}}</p>
-    <p>Registered: {{user.registered.split(' ').join('') | date:"MM-dd-yyyy HH-mm"}}</p>
+    <p>Registered: {{user.registered ? (user.registered.split(' ').join('') | date:"MM-dd-yyyy HH-mm") : ''}}</p>
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button (click)="isEditMode = !isEditMode" color="accent">Edit</button>
@@ -75,9 +75,6 @@
     </mat-form-field>
     <mat-form-field class="width-50">
       <input matInput placeholder="Eye Color" [value]="user.eyeColor " formControlName="eyeColor">
-    </mat-form-field>
-    <mat-form-field class="width-50">
-      <input matInput placeholder="Registered" [value]="user.registered " formControlName="registered">
     </mat-form-field>
   </mat-card-content>
   <mat-card-actions>

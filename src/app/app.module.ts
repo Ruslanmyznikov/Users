@@ -3,10 +3,11 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { MatToolbarModule, MatButtonModule, MatDividerModule, MatListModule, MatTableModule, 
   MatPaginatorModule, MatFormFieldModule, MatInputModule, MatChipsModule, MatBadgeModule, 
-  MatIconModule, MatAutocompleteModule, } from '@angular/material';
+  MatIconModule, MatAutocompleteModule, MatNativeDateModule, } from '@angular/material';
 import {MatSortModule} from '@angular/material/sort';
 import {MatCardModule} from '@angular/material/card';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
@@ -32,7 +33,7 @@ import { reducers, metaReducers } from './store/reducers';
     MatToolbarModule, MatButtonModule, MatDividerModule, MatListModule, 
     MatTableModule, MatPaginatorModule, MatFormFieldModule, MatInputModule,
     MatSortModule, MatCardModule, MatChipsModule, MatBadgeModule, MatIconModule,
-    MatAutocompleteModule, MatDialogModule,
+    MatAutocompleteModule, MatDialogModule, MatDatepickerModule, MatNativeDateModule,
     StoreModule.forRoot(reducers, {
       metaReducers,
       runtimeChecks: {

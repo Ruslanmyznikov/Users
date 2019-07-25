@@ -48,7 +48,7 @@ export class UserDetailComponent implements OnInit {
     about: new FormControl(''),
     company: new FormControl(''),
     eyeColor: new FormControl(''),
-    registered: new FormControl(''),
+    // registered: new FormControl(''),
   });
 
 
@@ -173,13 +173,15 @@ export class UserDetailComponent implements OnInit {
     let formData = this.userDetailEdit.value;
     this.user.name = formData.name;
     this.user.email = formData.email;
+    this.user.age = formData.age;
+    this.user.phone = formData.phone;
     this.user.balance = formData.balance;
     this.user.address = formData.address;
     this.user.tags = formData.tagsCtrl;
     this.user.about = formData.about;
     this.user.company = formData.company;
     this.user.eyeColor = formData.eyeColor;
-    this.user.registered = formData.registered;
+    this.user.registered = new Date();
     this.isEditMode && this.store.dispatch(editUser(this.user))
     this.isCreateMode && this.store.dispatch(createUser(this.user))
     this.updateTable();
