@@ -48,7 +48,6 @@ export class UserDetailComponent implements OnInit {
     about: new FormControl(''),
     company: new FormControl(''),
     eyeColor: new FormControl(''),
-    // registered: new FormControl(''),
   });
 
 
@@ -150,7 +149,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   killUser(user: User) {
-    this.store.dispatch(killUser(this.user))
+    this.store.dispatch(killUser(this.user));
     this.updateTable();
   }
 

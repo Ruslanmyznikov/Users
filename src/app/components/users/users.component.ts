@@ -36,17 +36,16 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     if (this.persistanceService.get('usersData')) {
-      this.bootstarapTable(this.persistanceService.get('usersData').users)
+      this.bootstarapTable(this.persistanceService.get('usersData').users);
     } else {
       this.userService.getUsersList().subscribe((usersArray: User[]) => {
-        this.persistanceService.set('usersData', usersArray)
-        this.bootstarapTable(usersArray)
+        this.persistanceService.set('usersData', usersArray);
+        this.bootstarapTable(usersArray);
       });
     }
   }
 
   bootstarapTable(usersArray) {
-    console.log(usersArray)
     this.users = usersArray;
     this.initTable();
     this.store.dispatch(setUsers({users: [...usersArray]}));
