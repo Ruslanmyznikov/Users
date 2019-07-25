@@ -39,7 +39,7 @@ export class UsersComponent implements OnInit {
       this.bootstarapTable(this.persistanceService.get('usersData').users);
     } else {
       this.userService.getUsersList().subscribe((usersArray: User[]) => {
-        this.persistanceService.set('usersData', usersArray);
+        this.persistanceService.set('usersData', {users: usersArray});
         this.bootstarapTable(usersArray);
       });
     }
