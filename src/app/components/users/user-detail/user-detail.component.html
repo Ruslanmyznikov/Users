@@ -1,7 +1,7 @@
 <mat-card *ngIf="!isEditMode && !isCreateMode" class="example-card">
   <mat-card-header>
     <div mat-card-avatar [matBadge]="user.isActive ? 'on' : 'off'" matBadgePosition="before"
-      [matBadgeColor]="user.isActive  ? accent : warn " [ngStyle]="{'background-image': getUserPictureUrl()}"
+      [matBadgeColor]="user.isActive  ? 'accent' : 'warn' " [ngStyle]="{'background-image': getUserPictureUrl()}"
       class="header-image"></div>
 
     <mat-card-title>{{user.name}}</mat-card-title>
